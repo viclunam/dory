@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Logo from "../components/Logo.astro";
+import Github from "../components/Github.astro";
+import Google from "../components/Google.astro";
+---
+
+<script>
+  type Provider = "github" | "google";
+
+  import { signInWithGithub, currentUser } from "../lib/auth";
+
+  const buttons = document.querySelectorAll("button[data-provider]");
+  const loginSection = document.querySelector("#login")!;
+  const tokenSection = document.querySelector("#token")!;
+
+  const handleLogin = async (provider: Provider) => {
+    const {
+      data: { user },
+    } = await currentUser();
+
+    if (user) {
+      loginSection.classList.add("hidden");
+      tokenSection.classList.remove("hidden");
+
+      (tokenSection.childNodes[1] as HTMLAnchorElement).href =
+        "vscode://dory?id=" + user.id;
+
+      return;
+    }
+
+    if (provider === "google") {
+      console.error("Google login not implemented yet");
+      return;
+    }
+
+    const { data } = await signInWithGithub();
+
+    console.log(data);
+  };
+
+  // Maneja los clics en cada botón.
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const buttonElement = button as HTMLButtonElement;
+      handleLogin(buttonElement.dataset.provider! as Provider);
+    });
+  });
+</script>
+
+<Layout title="Welcome to Astro.">
+  <main class="flex flex-col gap-8 w-full h-screen items-center justify-center">
+    <Logo />
+
+    <h1 class="text-2xl text-white font-bold">Welcome to Dory</h1>
+
+    <section class="hidden p-4 bg-white opacity-40 rounded-full" id="token">
+      <a href="">Abrir en Visual Studio Code</a>
+    </section>
+
+    <div id="login" class="flex gap-3">
+      <button data-provider="github">
+        <Github />
+      </button>
+
+      <button data-provider="google">
+        <Google />
+      </button>
+    </div>
+  </main>
+</Layout>
