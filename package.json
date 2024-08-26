@@ -1,41 +1,115 @@
 {
-  "name": "dory",
-  "displayName": "dory",
-  "description": "Cross-platform, cloud-based notes app. Inspired Dory.",
+  "name": "dory-notes",
+  "publisher": "victor-luna",
+  "displayName": "Dory Notes",
   "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.85.0"
+  "description": "A minimalist and versioned notes application for programmers.",
+  "author": "Victor Luna <victor.luna.mullisaca@gmail.com>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/viclunam",
+  "homepage": "https://github.com/viclunam/dory-notes#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viclunam/dory-notes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/viclunam/dory-notes/issues"
   },
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
   "main": "./out/extension.js",
+  "icon": "res/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "activationEvents": [],
   "contributes": {
     "commands": [
       {
-        "command": "dory.helloWorld",
-        "title": "Hello World"
+        "command": "dory-notes.login",
+        "title": "Login",
+        "category": "Dory"
+      },
+      {
+        "command": "dory-notes.refresh",
+        "title": "Refresh",
+        "icon": "res/refresh-circle.svg"
+      },
+      {
+        "command": "dory-notes.openNote",
+        "title": "Open Note"
+      },
+      {
+        "command": "dory-notes.newNote",
+        "title": "New Note",
+        "icon": "res/add-circle.svg"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "dory-notes",
+          "title": "Dory Notes",
+          "icon": "res/dory.svg"
+        }
+      ]
+    },
+    "views": {
+      "dory-notes": [
+        {
+          "id": "dory-notes-container",
+          "name": "Better ideas 💡"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "dory-notes-container",
+        "contents": "You haven't taken notes yet, it's time to start jotting down your code ideas! 🚀✨\n[create note](command:dory-notes.newNote)"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "dory-notes.refresh",
+          "when": "view == dory-notes-container",
+          "group": "navigation"
+        },
+        {
+          "command": "dory-notes.newNote",
+          "when": "view == dory-notes-container",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "pretest": "pnpm run compile && pnpm run lint",
-    "lint": "eslint src --ext ts",
-    "test": "vscode-test"
+    "vscode:prepublish": "npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node",
+    "build": "npm run -S esbuild-base -- --sourcemap",
+    "watch": "npm run -S esbuild-base -- --sourcemap --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "eslint src --ext ts && tsc --noEmit"
+  },
+  "dependencies": {
+    "@octokit/rest": "^20.0.2",
+    "mkdirp": "^3.0.1",
+    "rimraf": "^5.0.5"
   },
   "devDependencies": {
-    "@types/vscode": "^1.85.0",
+    "@antfu/eslint-config": "^2.6.3",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
+    "@types/vscode": "^1.85.0",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
-    "eslint": "^8.56.0",
-    "typescript": "^5.3.3",
     "@vscode/test-cli": "^0.0.4",
-    "@vscode/test-electron": "^2.3.8"
+    "@vscode/test-electron": "^2.3.8",
+    "esbuild": "^0.19.11",
+    "eslint": "^8.56.0",
+    "eslint-ts-patch": "^8.56.0-0",
+    "typescript": "^5.3.3"
   }
 }

@@ -1,71 +1,46 @@
-# dory README
+# Dory Notes - VS Code Extension
 
-This is the README for your extension "dory". After writing up a brief description, we recommend including the following sections.
+<div align="center">
+  <img src="./src/resources/dory-notes.png" alt="Dory Notes Logo">
+</div>
+
+Dory Notes is a VS Code extension that allows programmers to create and manage versioned notes inspired by Dory, the forgetful fish from Finding Nemo.
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+- Create and manage versioned notes directly within VS Code.
+- Easily switch between different versions of a note.
+- Collaborate with team members by sharing notes and their versions.
+- Search and filter notes based on keywords or tags.
+- Customize the appearance of notes using Markdown.
 
-For example if there is an image subfolder under your extension project workspace:
+## Installation
 
-\!\[feature X\]\(images/feature-x.png\)
+1. Launch VS Code.
+2. Go to the Extensions view by clicking on the square icon on the left sidebar or by pressing `Ctrl+Shift+X`.
+3. Search for "Dory Notes" in the Extensions view search bar.
+4. Click on the "Install" button next to the "Dory Notes" extension.
+5. Once installed, click on the "Reload" button to activate the extension.
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+## Usage
 
-## Requirements
+1. Open the Command Palette by pressing `Ctrl+Shift+P`.
+2. Search for "Dory Notes" and select the desired command.
+3. Follow the prompts to create, edit, or manage your notes.
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+## Contributing
 
-## Extension Settings
+Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request on the [GitHub repository](https://github.com/viclunam/dory-notes).
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+## License
 
-For example:
+This extension is licensed under the [MIT License](./LICENSE).
 
-This extension contributes the following settings:
+## Acknowledgements
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+- This extension was inspired by Dory, the forgetful fish from Finding Nemo.
+- Special thanks to the VS Code team for providing a great extension development platform.
 
-## Known Issues
+## Contact
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
-
-## Release Notes
-
-Users appreciate release notes as you update your extension.
-
-### 1.0.0
-
-Initial release of ...
-
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
----
-
-## Following extension guidelines
-
-Ensure that you've read through the extensions guidelines and follow the best practices for creating your extension.
-
-* [Extension Guidelines](https://code.visualstudio.com/api/references/extension-guidelines)
-
-## Working with Markdown
-
-You can author your README using Visual Studio Code. Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux).
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux).
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets.
-
-## For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+For any questions or inquiries, please contact the project maintainer at victor@example.com.

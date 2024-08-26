@@ -1,24 +1,23 @@
-import type { AuthChangeEvent, Session } from "@supabase/supabase-js";
-import { supabase } from "./supabase";
+import { supabase } from './supabase'
 
 export function signInWithGithub() {
   return supabase.auth.signInWithOAuth({
-    provider: "github",
-  });
+    provider: 'github',
+  })
 }
 
 export function signOut() {
-  return supabase.auth.signOut();
+  return supabase.auth.signOut()
 }
 
 export function currentSession() {
-  return supabase.auth.getSession();
+  return supabase.auth.getSession()
 }
 
 type AuthStateChangeCallback = Parameters<
   typeof supabase.auth.onAuthStateChange
->[0];
+>[0]
 
 export function onAuthStateChange(callback: AuthStateChangeCallback) {
-  return supabase.auth.onAuthStateChange(callback);
+  return supabase.auth.onAuthStateChange(callback)
 }

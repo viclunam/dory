@@ -1,26 +1,60 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
-import * as vscode from 'vscode';
+import os from 'node:os'
+import path from 'node:path'
+import fs from 'node:fs'
+import * as vscode from 'vscode'
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+import { Auth } from './auth'
+import { exec } from './lib/exec'
+import { NoteExplorer } from './noteExplorer'
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "dory" is now active!');
+export async function activate(context: vscode.ExtensionContext) {
+  const rootPath = path.join(os.homedir(), '.dory-notes')
+  context.secrets.store('dory-notes.rootPath', rootPath)
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('dory.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from dory!');
-	});
+  const authService = new Auth()
+  await authService.initialize(context)
 
-	context.subscriptions.push(disposable);
+  new NoteExplorer(context)
+
+  const disposable = vscode.commands.registerCommand(
+    'dory-notes.login',
+    async () => {
+      try {
+        const octokit = await authService.getOctokit()
+        const userInfo = await octokit.users.getAuthenticated()
+
+        const isCloned = fs.existsSync(rootPath)
+
+        if (isCloned) {
+          vscode.window.showInformationMessage(
+            `Welcome back ${userInfo.data.name} to dory notes`,
+          )
+
+          return
+        }
+
+        const repo = await octokit.repos.createForAuthenticatedUser({
+          name: 'personal-dory-notes',
+          description: 'A minimalist and versioned notes application for programmers, inspired by Dory from Finding Nemo',
+          private: true,
+          auto_init: true,
+        })
+
+        await exec(`git clone ${repo.data.clone_url} ${rootPath}`)
+
+        vscode.window.showInformationMessage(
+          `Welcome ${userInfo.data.name} to dory notes`,
+        )
+      }
+      catch (error) {
+        vscode.window.showErrorMessage(
+          `Error while trying to login into dory notes: ${error}`,
+        )
+      }
+    },
+  )
+
+  context.subscriptions.push(disposable)
 }
 
-// This method is called when your extension is deactivated
 export function deactivate() {}
