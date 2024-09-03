@@ -33,6 +33,25 @@ export async function activate(context: vscode.ExtensionContext) {
           return
         }
 
+        // verify if exists a repository with the name personal-dory-notes
+        // if exists clone it
+        // if not create a new repository and clone it
+
+        const exist = await octokit.repos.get({
+          owner: userInfo.data.login,
+          repo: 'personal-dory-notes',
+        })
+
+        if (exist.status === 200) {
+          await exec(`git clone ${exist.data.clone_url} ${rootPath}`)
+
+          vscode.window.showInformationMessage(
+            `Welcome ${userInfo.data.name} to dory notes`,
+          )
+
+          return
+        }
+
         const repo = await octokit.repos.createForAuthenticatedUser({
           name: 'personal-dory-notes',
           description: 'A minimalist and versioned notes application for programmers, inspired by Dory from Finding Nemo',
